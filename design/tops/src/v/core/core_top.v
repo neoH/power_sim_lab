@@ -91,6 +91,7 @@ module core_top(
 	i_Clk,
 	i_RstN,
 	// ----- instruction ahbl interface ----- // {
+	// outputs
 	o_Ihaddr,
 	o_Ihwrite,
 	o_Ihprot,
@@ -99,6 +100,7 @@ module core_top(
 	o_Ihtrans,
 	o_Ihmstlock,
 	o_Ihwdata,
+	// inputs
 	i_Ihrdata,
 	i_Ihready,
 	i_Ihresp,
@@ -108,6 +110,15 @@ module core_top(
 
 	input i_Clk;   // system core clock, which act as the work clock.
 	input i_RstN;  // system result, valid in low level, which used to reset all internal register level values.
+
+
+	// module instances //
+
+	ifu m_ifu(
+	);
+
+
+
 
 
 endmodule
