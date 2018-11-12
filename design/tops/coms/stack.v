@@ -34,9 +34,15 @@ module stack(
 	/* internal regs & wires */
 	reg [WIDTH - 1 : 0] r_stack [ST_DEPTH - 1 : 0];
 	reg [PT_WIDTH - 1 : 0] r_Ptr;
-	reg [WIDTH - 1 : 0] r_Dat;
+	// reg [WIDTH - 1 : 0] r_Dat;
 	/*************************/
 
+
+	/* combination logic */
+	assign o_PopDat = r_stack[r_Ptr];
+	assign o_Empty  = (r_Ptr == {PT_WIDTH{1'b0}}) ? 1'b1 : 1'b0;
+	assign o_Full   = (r_Ptr == {PT_WIDTH{1'b1}}) ? 1'b1 : 1'b0;
+	/*********************/
 
 	/* main block and item process unit */
 	// three situations will be occurred:
@@ -53,10 +59,21 @@ module stack(
 			case ({i_Push,i_Pop}) // {
 				2'b01: begin // {
 					// pop valid
+					r_Ptr <= r_Ptr - 1'b1;
 				end // }
 				2'b10: begin // {
+					// push valid
+					if (r_Ptr != {PT_WIDTH{1'b1}}) begin // {
+						// only when stack not full, can this be written
+						r_Ptr <= r_Ptr + 1'b1;
+						r_stack[r_Ptr] = i_PushDat;
+					end // }
 				end // }
 				2'b11: begin // {
+					// push and pop both valid
+					// if this occurred, pop first and then do push
+					// ptr will not change, override the stack of current ptr instead.
+					r_stack[r_Ptr] = i_PushDat;
 				end // }
 				default: begin // {
 					// do nothing, only to keeping value
