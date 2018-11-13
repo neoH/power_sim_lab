@@ -25,6 +25,13 @@ module ifu (
 
 	parameter ST_DEPTH = 16;
 
+	/* status definition */
+	// -- IDLE: reset mode, if jump valid, then change to JMP state, else change to NFTH state next cycle of IDLE.
+	// -- JMP
+	// -- NFTH: normal fetch mode, asserting the request.
+	// -- TODO
+	/* TODO */
+	/*********************/
 
 	/* interface declaration */
 	input i_Clk,i_RstN;
@@ -49,6 +56,7 @@ module ifu (
 		if (!i_RstN) begin // {
 		// }
 		end else begin // {
+			// using FSM
 		end // }
 	end // }
 
